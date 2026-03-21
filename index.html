@@ -8,7 +8,7 @@
 </head>
 <body id="body-bg" class="bg-gray-100 flex items-center justify-center min-h-screen p-4 transition-colors duration-500">
     <div class="bg-white p-8 rounded-3xl shadow-2xl w-full max-w-md text-center border border-gray-100">
-        <img id="event-logo" src="" alt="Logo" class="mx-auto mb-4 h-24 object-contain hidden">
+        <img id="event-logo" src="" alt="Logo" crossorigin="anonymous" class="mx-auto mb-4 h-24 object-contain hidden"> <!-- ✅ CHANGED: added crossorigin="anonymous" -->
         <h1 id="event-name" class="text-2xl font-bold text-gray-800 mb-1">Loading...</h1>
         <p id="event-tagline" class="text-sm text-gray-500 mb-6 italic">Connecting to your wedding...</p>
 
@@ -26,60 +26,6 @@
     </div>
 
     <script>
-        // --- 3. UPDATE YOUR SCRIPT URL HERE ---
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwALX73OBuoGM3aCo44TLYUtVuJ8OPoj2fJEpYs2tLYEoJD-Jkpb2-Ad7tMdWrnY_oH/exec';
 
-        const urlParams = new URLSearchParams(window.location.search);
-        const eventKey = urlParams.get('event') || 'Default';
-
-        // Fetch Theme from Google Sheet
-        fetch(`${SCRIPT_URL}?event=${eventKey}`)
-            .then(res => res.json())
-            .then(theme => {
-                document.getElementById('event-name').innerText = theme.name;
-                document.getElementById('event-tagline').innerText = theme.tagline;
-                document.getElementById('upload-btn').style.backgroundColor = theme.color;
-                document.getElementById('body-bg').style.backgroundColor = theme.color + "10"; // Very light tint
-                if(theme.logo) {
-                    const logo = document.getElementById('event-logo');
-                    logo.src = theme.logo;
-                    logo.classList.remove('hidden');
-                }
-            });
-
-        // Handle Upload
-        document.getElementById('photo-input').addEventListener('change', async (e) => {
-            const sessionId = document.getElementById('session-id').value || 'Guest';
-            const status = document.getElementById('status');
-            const files = e.target.files;
-            if (!files.length) return;
-
-            status.className = "text-center text-sm font-bold p-3 rounded-xl bg-blue-100 text-blue-700 block";
-            status.innerText = `Sending ${files.length} photo(s)...`;
-
-            for (let file of files) {
-                const reader = new FileReader();
-                reader.readAsDataURL(file);
-                reader.onload = async () => {
-                    try {
-                        await fetch(SCRIPT_URL, {
-                            method: 'POST',
-                            body: JSON.stringify({
-                                eventName: eventKey,
-                                sessionId: sessionId,
-                                fileName: file.name,
-                                base64: reader.result
-                            })
-                        });
-                        status.innerText = "✅ PHOTOS SENT! Printing soon...";
-                        status.className = "text-center text-sm font-bold p-3 rounded-xl bg-green-100 text-green-700 block";
-                    } catch (err) {
-                        status.innerText = "❌ ERROR. Try again.";
-                        status.className = "text-center text-sm font-bold p-3 rounded-xl bg-red-100 text-red-700 block";
-                    }
-                };
-            }
-        });
-    </script>
-</body>
-</html>
+        const urlParams = new
